@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KKML0 Costing Reports — Interactive Demo</title>
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: #f9f9f7; color: #23233b; padding: 24px;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { background: #0d0d0d; color: #fff; }
+    .card { background: #1a1a19 !important; border-color: rgba(255,255,255,0.12) !important; }
+    .card p, .foot { color: #c3c2b7 !important; }
+  }
+  .wrap { max-width: 880px; width: 100%; text-align: center; }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #7a7f99; }
+  h1 { font-size: 40px; margin: 8px 0 10px; letter-spacing: -0.02em; }
+  .sub { color: #7a7f99; margin: 0 0 36px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .card {
+    display: block; text-decoration: none; color: inherit; text-align: left;
+    background: #fcfcfb; border: 1px solid rgba(11,11,11,0.1); border-radius: 16px;
+    padding: 26px 26px 22px; transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(30,39,97,0.15); }
+  .card h2 { margin: 0 0 6px; font-size: 20px; }
+  .card p { margin: 0 0 14px; color: #52514e; font-size: 14px; }
+  .go { font-weight: 700; color: #2a78d6; font-size: 14px; }
+  .foot { margin-top: 36px; font-size: 12.5px; color: #7a7f99; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="eyebrow">KKML0 · SAP Material Ledger</div>
+    <h1>Costing Reports — Interactive Demo</h1>
+    <p class="sub">Explore the premium frontends with realistic sample data. Nothing to install, no SAP login — just click and navigate.</p>
+    <div class="grid">
+      <a class="card" href="./costmatrix/">
+        <h2>💠 Cost Matrix Pro</h2>
+        <p><strong>Actual Costing · premium UI</strong> — KPI tiles, the Material Ledger waterfall, composition and period comparison on one page.</p>
+        <span class="go">Open the demo →</span>
+      </a>
+      <a class="card" href="./releasedmatrix/">
+        <h2>🏆 Released Matrix Pro</h2>
+        <p><strong>Released Costs · premium UI</strong> — standard cost estimates per material, top-materials ranking and period comparison.</p>
+        <span class="go">Open the demo →</span>
+      </a>
+      <a class="card" href="./fiori-actual/index.html?demo">
+        <h2>🔷 Cost Component Matrix</h2>
+        <p><strong>Actual Costing · SAP Fiori</strong> — the same report in the SAP standard look: category tree, slicers, ML Flow and Compare Periods dialogs.</p>
+        <span class="go">Open the demo →</span>
+      </a>
+      <a class="card" href="./fiori-released/index.html?demo">
+        <h2>🔷 Released Costs Matrix</h2>
+        <p><strong>Released Costs · SAP Fiori</strong> — flat per-material matrix with Top Materials ranking and Compare Periods dialogs.</p>
+        <span class="go">Open the demo →</span>
+      </a>
+    </div>
+    <p class="foot">All figures are fictitious sample data · In production, the same apps read live SAP OData services — numbers match the classic KKML0 cent for cent.</p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# Demo pública: nunca publicar o fonte legível nem os mapas (12/08/2026).
+# Os -dbg e .map reconstroem o código original inteiro para qualquer um.
+*.map
+*-dbg.js
+*-dbg.controller.js
+*-dbg.view.xml

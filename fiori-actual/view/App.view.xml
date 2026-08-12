@@ -1,0 +1,321 @@
+<mvc:View
+    controllerName="kkml.costmatrix.controller.App"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:t="sap.ui.table"
+    displayBlock="true"
+    height="100%">
+    <Page title="{i18n>appTitle}" enableScrolling="false">
+        <content>
+            <VBox height="100%" renderType="Bare">
+                <HBox wrap="Wrap" alignItems="End" class="sapUiSmallMarginBegin sapUiSmallMarginTop sapUiTinyMarginBottom">
+                    <VBox class="sapUiTinyMarginEnd">
+                        <Label text="{i18n>fltCompCode}"/>
+                        <Input id="fCompCode" width="7rem" showValueHelp="true" valueHelpRequest=".onValueHelp"/>
+                    </VBox>
+                    <VBox class="sapUiTinyMarginEnd">
+                        <Label text="{i18n>fltPlant}" required="true"/>
+                        <MultiInput id="fPlant" width="11rem" showValueHelp="true" valueHelpRequest=".onValueHelp"
+                            placeholder="{i18n>tokenPlaceholder}"/>
+                    </VBox>
+                    <VBox class="sapUiTinyMarginEnd">
+                        <Label text="{i18n>fltFiscper}" required="true"/>
+                        <MultiInput id="fFiscper" width="12rem" showValueHelp="false"
+                            placeholder="{i18n>fltFiscperPlaceholder}"/>
+                    </VBox>
+                    <VBox class="sapUiTinyMarginEnd">
+                        <Label text="{i18n>fltCurtype}" required="true"/>
+                        <Input id="fCurtype" width="6rem" value="10"/>
+                    </VBox>
+                    <VBox class="sapUiTinyMarginEnd">
+                        <Label text="{i18n>fltMaterial}"/>
+                        <MultiInput id="fMaterial" width="20rem" showValueHelp="true" valueHelpRequest=".onValueHelp"
+                            placeholder="{i18n>fltMaterialPlaceholder}"/>
+                    </VBox>
+                    <Button text="{i18n>go}" type="Emphasized" press=".onGo" class="sapUiTinyMarginEnd"/>
+                    <Button text="{i18n>clearFilters}" type="Transparent" icon="sap-icon://clear-filter"
+                        press=".onClearFilters" class="sapUiTinyMarginEnd"/>
+                    <Button text="{i18n>moreFilters}" type="Transparent"
+                        icon="{= ${view>/showMoreFilters} ? 'sap-icon://slim-arrow-up' : 'sap-icon://slim-arrow-down' }"
+                        press=".onToggleMoreFilters"/>
+                    <Button text="{i18n>demoData}" type="Transparent" icon="sap-icon://simulate"
+                        visible="{view>/demoAvailable}" press=".onLoadDemo"/>
+                </HBox>
+                <HBox wrap="Wrap" alignItems="End" visible="{view>/showMoreFilters}"
+                    class="sapUiSmallMarginBegin sapUiTinyMarginBottom">
+                    <VBox class="sapUiTinyMarginEnd">
+                        <Label text="{i18n>fltMtart}"/>
+                        <MultiInput id="fMtart" width="10rem" showValueHelp="true" valueHelpRequest=".onValueHelp"
+                            placeholder="{i18n>tokenPlaceholder}"/>
+                    </VBox>
+                    <VBox class="sapUiTinyMarginEnd">
+                        <Label text="{i18n>fltMatkl}"/>
+                        <MultiInput id="fMatkl" width="12rem" showValueHelp="true" valueHelpRequest=".onValueHelp"
+                            placeholder="{i18n>tokenPlaceholder}"/>
+                    </VBox>
+                    <VBox class="sapUiTinyMarginEnd">
+                        <Label text="{i18n>fltPrdha}"/>
+                        <MultiInput id="fPrdha" width="14rem" showValueHelp="true" valueHelpRequest=".onValueHelp"
+                            placeholder="{i18n>tokenPlaceholder}"/>
+                    </VBox>
+                    <VBox class="sapUiTinyMarginEnd">
+                        <Label text="{i18n>fltBklas}"/>
+                        <MultiInput id="fBklas" width="10rem" showValueHelp="true" valueHelpRequest=".onValueHelp"
+                            placeholder="{i18n>tokenPlaceholder}"/>
+                    </VBox>
+                    <VBox class="sapUiTinyMarginEnd">
+                        <Label text="{i18n>fltPrctr}"/>
+                        <MultiInput id="fPrctr" width="12rem" showValueHelp="true" valueHelpRequest=".onValueHelp"
+                            placeholder="{i18n>tokenPlaceholder}"/>
+                    </VBox>
+                </HBox>
+                <Toolbar design="Transparent">
+                    <Title text="{view>/resultTitle}"/>
+                    <ToolbarSpacer/>
+                    <Button icon="sap-icon://vertical-waterfall-chart" text="{i18n>flowChart}" tooltip="{i18n>flowChart}"
+                        visible="{view>/hasResult}" press=".onShowFlow"/>
+                    <Button icon="sap-icon://compare" text="{i18n>comparePeriods}" tooltip="{i18n>comparePeriods}"
+                        visible="{view>/canCompare}" press=".onShowCompare"/>
+                    <Button icon="sap-icon://excel-attachment" text="{i18n>exportView}" tooltip="{i18n>exportView}"
+                        visible="{view>/hasResult}" press=".onExport"/>
+                    <Button icon="sap-icon://table-view" text="{i18n>exportRaw}" tooltip="{i18n>exportRaw}"
+                        visible="{view>/hasResult}" press=".onExportRaw"/>
+                    <Button icon="sap-icon://expand-group" tooltip="{i18n>expandAll}" press=".onExpandAll"/>
+                    <Button icon="sap-icon://collapse-group" tooltip="{i18n>collapseAll}" press=".onCollapseAll"/>
+                </Toolbar>
+                <OverflowToolbar design="Transparent" visible="{view>/hasResult}">
+                    <Label text="{i18n>navigate}" design="Bold"/>
+
+                    <Label text="{i18n>fltPlant}" class="sapUiSmallMarginBegin" visible="{view>/slicers/plant/visible}"/>
+                    <Button icon="sap-icon://navigation-left-arrow" tooltip="{i18n>navPrev}"
+                        visible="{view>/slicers/plant/visible}" press=".onSlicerPrev">
+                        <customData>
+                        <core:CustomData key="field" value="plant"/>
+                        </customData>
+                    </Button>
+                    <MultiComboBox id="slPlant" width="11rem" visible="{view>/slicers/plant/visible}"
+                        placeholder="{i18n>slAll}" items="{view>/slicers/plant/items}" selectionFinish=".onSlicerChange">
+                        <core:Item key="{view>key}" text="{view>text}"/>
+                    </MultiComboBox>
+                    <Button icon="sap-icon://navigation-right-arrow" tooltip="{i18n>navNext}"
+                        visible="{view>/slicers/plant/visible}" press=".onSlicerNext">
+                        <customData>
+                        <core:CustomData key="field" value="plant"/>
+                        </customData>
+                    </Button>
+
+                    <Label text="{i18n>fltFiscper}" class="sapUiSmallMarginBegin" visible="{view>/slicers/fiscper/visible}"/>
+                    <Button icon="sap-icon://navigation-left-arrow" tooltip="{i18n>navPrev}"
+                        visible="{view>/slicers/fiscper/visible}" press=".onSlicerPrev">
+                        <customData>
+                        <core:CustomData key="field" value="fiscper"/>
+                        </customData>
+                    </Button>
+                    <MultiComboBox id="slPeriod" width="11rem" visible="{view>/slicers/fiscper/visible}"
+                        placeholder="{i18n>slAll}" items="{view>/slicers/fiscper/items}" selectionFinish=".onSlicerChange">
+                        <core:Item key="{view>key}" text="{view>text}"/>
+                    </MultiComboBox>
+                    <Button icon="sap-icon://navigation-right-arrow" tooltip="{i18n>navNext}"
+                        visible="{view>/slicers/fiscper/visible}" press=".onSlicerNext">
+                        <customData>
+                        <core:CustomData key="field" value="fiscper"/>
+                        </customData>
+                    </Button>
+
+                    <Label text="{i18n>navMaterial}" class="sapUiSmallMarginBegin"/>
+                    <Button icon="sap-icon://navigation-left-arrow" tooltip="{i18n>navPrev}"
+                        press=".onPrevMaterial"/>
+                    <MultiComboBox id="slicer" width="24rem"
+                        placeholder="{i18n>navAll}"
+                        items="{view>/materials}"
+                        loadItems=".onLoadMaterials"
+                        selectionFinish=".onMaterialSlice">
+                        <core:Item key="{view>key}" text="{view>text}"/>
+                    </MultiComboBox>
+                    <Button icon="sap-icon://navigation-right-arrow" tooltip="{i18n>navNext}"
+                        press=".onNextMaterial"/>
+
+                    <Label text="{i18n>fltMtart}" class="sapUiSmallMarginBegin" visible="{view>/slicers/mtart/visible}"/>
+                    <Button icon="sap-icon://navigation-left-arrow" tooltip="{i18n>navPrev}"
+                        visible="{view>/slicers/mtart/visible}" press=".onSlicerPrev">
+                        <customData>
+                        <core:CustomData key="field" value="mtart"/>
+                        </customData>
+                    </Button>
+                    <MultiComboBox id="slMtart" width="10rem" visible="{view>/slicers/mtart/visible}"
+                        placeholder="{i18n>slAll}" items="{view>/slicers/mtart/items}" selectionFinish=".onSlicerChange">
+                        <core:Item key="{view>key}" text="{view>text}"/>
+                    </MultiComboBox>
+                    <Button icon="sap-icon://navigation-right-arrow" tooltip="{i18n>navNext}"
+                        visible="{view>/slicers/mtart/visible}" press=".onSlicerNext">
+                        <customData>
+                        <core:CustomData key="field" value="mtart"/>
+                        </customData>
+                    </Button>
+
+                    <Label text="{i18n>fltMatkl}" class="sapUiSmallMarginBegin" visible="{view>/slicers/matkl/visible}"/>
+                    <Button icon="sap-icon://navigation-left-arrow" tooltip="{i18n>navPrev}"
+                        visible="{view>/slicers/matkl/visible}" press=".onSlicerPrev">
+                        <customData>
+                        <core:CustomData key="field" value="matkl"/>
+                        </customData>
+                    </Button>
+                    <MultiComboBox id="slMatkl" width="10rem" visible="{view>/slicers/matkl/visible}"
+                        placeholder="{i18n>slAll}" items="{view>/slicers/matkl/items}" selectionFinish=".onSlicerChange">
+                        <core:Item key="{view>key}" text="{view>text}"/>
+                    </MultiComboBox>
+                    <Button icon="sap-icon://navigation-right-arrow" tooltip="{i18n>navNext}"
+                        visible="{view>/slicers/matkl/visible}" press=".onSlicerNext">
+                        <customData>
+                        <core:CustomData key="field" value="matkl"/>
+                        </customData>
+                    </Button>
+
+                    <Label text="{i18n>fltPrdha}" class="sapUiSmallMarginBegin" visible="{view>/slicers/prdha/visible}"/>
+                    <Button icon="sap-icon://navigation-left-arrow" tooltip="{i18n>navPrev}"
+                        visible="{view>/slicers/prdha/visible}" press=".onSlicerPrev">
+                        <customData>
+                        <core:CustomData key="field" value="prdha"/>
+                        </customData>
+                    </Button>
+                    <MultiComboBox id="slPrdha" width="12rem" visible="{view>/slicers/prdha/visible}"
+                        placeholder="{i18n>slAll}" items="{view>/slicers/prdha/items}" selectionFinish=".onSlicerChange">
+                        <core:Item key="{view>key}" text="{view>text}"/>
+                    </MultiComboBox>
+                    <Button icon="sap-icon://navigation-right-arrow" tooltip="{i18n>navNext}"
+                        visible="{view>/slicers/prdha/visible}" press=".onSlicerNext">
+                        <customData>
+                        <core:CustomData key="field" value="prdha"/>
+                        </customData>
+                    </Button>
+
+                    <Label text="{i18n>fltBklas}" class="sapUiSmallMarginBegin" visible="{view>/slicers/bklas/visible}"/>
+                    <Button icon="sap-icon://navigation-left-arrow" tooltip="{i18n>navPrev}"
+                        visible="{view>/slicers/bklas/visible}" press=".onSlicerPrev">
+                        <customData>
+                        <core:CustomData key="field" value="bklas"/>
+                        </customData>
+                    </Button>
+                    <MultiComboBox id="slBklas" width="8rem" visible="{view>/slicers/bklas/visible}"
+                        placeholder="{i18n>slAll}" items="{view>/slicers/bklas/items}" selectionFinish=".onSlicerChange">
+                        <core:Item key="{view>key}" text="{view>text}"/>
+                    </MultiComboBox>
+                    <Button icon="sap-icon://navigation-right-arrow" tooltip="{i18n>navNext}"
+                        visible="{view>/slicers/bklas/visible}" press=".onSlicerNext">
+                        <customData>
+                        <core:CustomData key="field" value="bklas"/>
+                        </customData>
+                    </Button>
+
+                    <Label text="{i18n>fltPrctr}" class="sapUiSmallMarginBegin" visible="{view>/slicers/prctr/visible}"/>
+                    <Button icon="sap-icon://navigation-left-arrow" tooltip="{i18n>navPrev}"
+                        visible="{view>/slicers/prctr/visible}" press=".onSlicerPrev">
+                        <customData>
+                        <core:CustomData key="field" value="prctr"/>
+                        </customData>
+                    </Button>
+                    <MultiComboBox id="slPrctr" width="10rem" visible="{view>/slicers/prctr/visible}"
+                        placeholder="{i18n>slAll}" items="{view>/slicers/prctr/items}" selectionFinish=".onSlicerChange">
+                        <core:Item key="{view>key}" text="{view>text}"/>
+                    </MultiComboBox>
+                    <Button icon="sap-icon://navigation-right-arrow" tooltip="{i18n>navNext}"
+                        visible="{view>/slicers/prctr/visible}" press=".onSlicerNext">
+                        <customData>
+                        <core:CustomData key="field" value="prctr"/>
+                        </customData>
+                    </Button>
+                </OverflowToolbar>
+                <t:TreeTable id="tree"
+                    rows="{path: 'data>/nodes', parameters: {arrayNames: ['children'], numberOfExpandedLevels: 1}}"
+                    selectionMode="None"
+                    enableSelectAll="false"
+                    visibleRowCountMode="Auto"
+                    minAutoRowCount="8"
+                    fixedColumnCount="1"
+                    columnHeaderHeight="40">
+                    <t:layoutData>
+                        <FlexItemData growFactor="1" baseSize="0%" minHeight="0"/>
+                    </t:layoutData>
+                    <t:columns>
+                        <t:Column width="22rem" label="{i18n>colLead}">
+                            <t:template>
+                                <Text text="{data>label}" wrapping="false"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="9rem" hAlign="End" label="{i18n>colQuantity}">
+                            <t:template>
+                                <Text wrapping="false" text="{parts: ['data>quantity', 'data>base_uom'], formatter: '.fmtQty'}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="9rem" hAlign="End" label="{i18n>colTotal}">
+                            <t:template>
+                                <Text wrapping="false" text="{path: 'data>total', formatter: '.fmtAmt'}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="8.5rem" hAlign="End" label="{i18n>colDirectMaterial}">
+                            <t:template>
+                                <Text wrapping="false" text="{path: 'data>direct_material', formatter: '.fmtAmt'}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="8.5rem" hAlign="End" label="{i18n>colDeliveryOverhead}">
+                            <t:template>
+                                <Text wrapping="false" text="{path: 'data>delivery_overhead', formatter: '.fmtAmt'}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="8.5rem" hAlign="End" label="{i18n>colSubcontracting}">
+                            <t:template>
+                                <Text wrapping="false" text="{path: 'data>subcontracting', formatter: '.fmtAmt'}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="8.5rem" hAlign="End" label="{i18n>colDirectLabour}">
+                            <t:template>
+                                <Text wrapping="false" text="{path: 'data>direct_labour', formatter: '.fmtAmt'}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="8.5rem" hAlign="End" label="{i18n>colSetupLabour}">
+                            <t:template>
+                                <Text wrapping="false" text="{path: 'data>setup_labour', formatter: '.fmtAmt'}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="8.5rem" hAlign="End" label="{i18n>colMachineFmoVmo}">
+                            <t:template>
+                                <Text wrapping="false" text="{path: 'data>machine_fmo_vmo', formatter: '.fmtAmt'}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="8.5rem" hAlign="End" label="{i18n>colMaterialOverhead}">
+                            <t:template>
+                                <Text wrapping="false" text="{path: 'data>material_overhead', formatter: '.fmtAmt'}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="8.5rem" hAlign="End" label="{i18n>colIndirectLabour}">
+                            <t:template>
+                                <Text wrapping="false" text="{path: 'data>indirect_labour', formatter: '.fmtAmt'}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="8.5rem" hAlign="End" label="{i18n>colSetupMachine}">
+                            <t:template>
+                                <Text wrapping="false" text="{path: 'data>setup_machine', formatter: '.fmtAmt'}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="8.5rem" hAlign="End" label="{i18n>colTools}">
+                            <t:template>
+                                <Text wrapping="false" text="{path: 'data>tools', formatter: '.fmtAmt'}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="8.5rem" hAlign="End" label="{i18n>colGa}">
+                            <t:template>
+                                <Text wrapping="false" text="{path: 'data>ga', formatter: '.fmtAmt'}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column width="8.5rem" hAlign="End" label="{i18n>colTradingOh}">
+                            <t:template>
+                                <Text wrapping="false" text="{path: 'data>trading_oh', formatter: '.fmtAmt'}"/>
+                            </t:template>
+                        </t:Column>
+                    </t:columns>
+                </t:TreeTable>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

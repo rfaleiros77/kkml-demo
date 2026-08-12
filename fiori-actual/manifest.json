@@ -1,0 +1,76 @@
+{
+	"_version": "1.65.0",
+	"sap.app": {
+		"id": "kkml.costmatrix",
+		"type": "application",
+		"i18n": {
+			"bundleUrl": "i18n/i18n.properties",
+			"supportedLocales": [
+				""
+			]
+		},
+		"applicationVersion": {
+			"version": "0.1.0"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"dataSources": {
+			"mainService": {
+				"uri": "/sap/opu/odata4/sap/zui_kkml_cost_matrix_o4/srvd/sap/zui_kkml_cost_matrix/0001/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "4.0"
+				}
+			},
+			"valueHelpService": {
+				"uri": "/sap/opu/odata4/sap/zui_kkml_md_vh_o4/srvd/sap/zui_kkml_md_vh/0001/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "4.0"
+				}
+			}
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": false
+		}
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "kkml.costmatrix.view.App",
+			"type": "XML",
+			"id": "app",
+			"async": true
+		},
+		"dependencies": {
+			"minUI5Version": "1.120.0",
+			"libs": {
+				"sap.m": {},
+				"sap.ui.core": {},
+				"sap.ui.export": {},
+				"sap.ui.layout": {},
+				"sap.ui.table": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "kkml.costmatrix.i18n.i18n",
+					"supportedLocales": [
+						""
+					]
+				}
+			}
+		},
+		"flexBundle": false
+	}
+}

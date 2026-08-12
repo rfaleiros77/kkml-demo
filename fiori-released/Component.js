@@ -1,0 +1,1 @@
+sap.ui.define(["sap/ui/core/UIComponent"],function(e){"use strict";return e.extend("kkml.releasedmatrix.Component",{metadata:{manifest:"json",interfaces:["sap.ui.core.IAsyncContentCreation"]}})});
