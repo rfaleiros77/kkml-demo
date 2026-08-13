@@ -24,24 +24,19 @@ share the same `origin` remote.
 - **Runbook lives in the backup repo, not a separate active repo.** The backup
   and the live site are the *same* GitHub repo (`kkml-demo`), so committing here
   already puts the runbook in the real repo. No second location needed.
-- **No CLAUDE.md was created.** This is an archived backup; the durable
-  operational facts (source-protection rule, backup-push-publishes trap,
-  four-flavor structure) are already captured in the runbook prose, which is
-  in-repo and versioned. Creating a CLAUDE.md to restate them would duplicate
-  and risk drift. If this folder ever becomes an active project again,
-  promote those facts into a CLAUDE.md then.
+- **CLAUDE.md created (2026-08-13).** The durable rules — backup-push-publishes,
+  the source-protection `.gitignore` rule, four-flavor structure — now live in
+  `CLAUDE.md`. (This reverses a decision earlier in the same session to skip it;
+  Rogério asked for it explicitly, and the handover-skill convention is that
+  durable rules belong in CLAUDE.md and get referenced from here.)
 
 ## Traps
 
-- **A `git push` from this backup folder publishes the live site.** This folder
-  shares `origin` with `kkml-demo`, which GitHub Pages serves (legacy build,
-  `main` / root). Any push from here goes live within ~1–2 min. Do not push
-  experimental edits from the backup unless you mean them to be public.
-  (Also written as a NOTE in runbook section 6.)
-- **Before any deploy, run the source-protection check.** `.gitignore` blocks
-  `*.map`, `*-dbg.js`, `*-dbg.controller.js`, `*-dbg.view.xml` because those
-  reconstruct the original source of a *public* demo. Rule set 12/08/2026.
-  The check and the reasoning are in runbook section 4 + Quick Reference B.
+The two operational traps — **a push from this backup publishes the live site**,
+and **never commit `-dbg`/`.map` source-reconstructing files** — are durable, so
+they live in `CLAUDE.md` (§ "Regras duráveis"), with the deploy/check procedures
+in the runbook (section 4/6 + Quick Reference B). This session did not hit either;
+they are recorded so the next one does not.
 
 ## Where to look
 
